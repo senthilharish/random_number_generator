@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       body: Column(
         children: [
           const SizedBox(height: 30,),
-          input(_textcontroller1, "Enter the  number"),
+          input(_textcontroller1, "Enter the min number"),
           const SizedBox(height: 20),
           input(_textcontroller2, "Enter the max number"),
           const SizedBox(height: 50),
@@ -49,8 +49,11 @@ class _MyAppState extends State<MyApp> {
     return TextField(
       controller: control,
       decoration: InputDecoration(
+      
           border: OutlineInputBorder(
+            
             borderRadius: BorderRadius.circular(15),
+            
           ),
           hintText: htext,hintStyle: TextStyle(fontStyle: FontStyle.italic)),
       keyboardType: TextInputType.number, // Ensure only numbers are entered
@@ -64,13 +67,11 @@ class _MyAppState extends State<MyApp> {
           // Convert the entered text to an integer
           a = int.tryParse(_textcontroller1.text) ?? 0;
           b = int.tryParse(_textcontroller2.text) ?? 0;
-
-          // Ensure that the random number is generated only if a < b
           if (a < b) {
             randomNumber = a + Random().nextInt(b - a);
           }
           else{
-            randomNumber = 0; // Reset or handle case when a >= b
+            randomNumber = 0; 
           }
         });
       },
