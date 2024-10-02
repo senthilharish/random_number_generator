@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -6,9 +7,11 @@ void main() {
 
 int a = 0;
 int b = 0;
+int randomNumber = 0; // Global variable to hold the random number
 
 final _textcontroller1 = TextEditingController();
 final _textcontroller2 = TextEditingController();
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -20,49 +23,59 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
       appBar: AppBar(
-        title: const Text("Random Number"),
+        backgroundColor:const Color.fromARGB(255, 132, 191, 239),
+        title: Center(child: const Text("Random Number",style: TextStyle(fontSize: 30,fontStyle: FontStyle.italic,))),
       ),
+      backgroundColor: const Color.fromARGB(255, 204, 226, 244),
       body: Column(
         children: [
-          input(_textcontroller1),
-          button(a,_textcontroller1),
-          input(_textcontroller2),
-          button(b,_textcontroller2),
-          SizedBox(
-            height: 20,
-          ),
-          
+          const SizedBox(height: 30,),
+          input(_textcontroller1, "Enter the  number"),
+          const SizedBox(height: 20),
+          input(_textcontroller2, "Enter the max number"),
+          const SizedBox(height: 50),
+          button(),
+          const SizedBox(height: 100),
+          Text("The luckiest roll number is $randomNumber",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic,color: const Color.fromARGB(255, 192, 45, 65)),), // Display the random number
         ],
       ),
     ));
   }
 
-
-  TextField input(control) {
+  TextField input(control, htext) {
     return TextField(
-          controller: control,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              hintText: "Enter the starting number:"),
-          keyboardType: TextInputType.number, // Ensure only numbers are entered
-        );
-  }
-    MaterialButton button(value,control1) {
-    return MaterialButton(
-          onPressed: () {
-            setState(() {
-              // Convert the entered text to an integer
-              value = int.tryParse(control1.text) ?? 0;
-              print(value);
-            });
-          },
-          color: Colors.blueGrey,
-          child: const Text("click"),
-        );
+      controller: control,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          hintText: htext,hintStyle: TextStyle(fontStyle: FontStyle.italic)),
+      keyboardType: TextInputType.number, // Ensure only numbers are entered
+    );
   }
 
+  MaterialButton button() {
+    return MaterialButton(
+      onPressed: () {
+        setState(() {
+          // Convert the entered text to an integer
+          a = int.tryParse(_textcontroller1.text) ?? 0;
+          b = int.tryParse(_textcontroller2.text) ?? 0;
+
+          // Ensure that the random number is generated only if a < b
+          if (a < b) {
+            randomNumber = a + Random().nextInt(b - a);
+          }
+          else{
+            randomNumber = 0; // Reset or handle case when a >= b
+          }
+        });
+      },
+      color: Colors.blueGrey,
+      child: const Text("Generate",style: TextStyle(fontSize:18),),
+    );
+  }
 }
